@@ -15,7 +15,8 @@ A simple, asynchronous RESTful Web API built with **.NET 8**, **Entity Framework
    ```bash
    dotnet build
 3. Start the local development server:
-    ```dotnet run
+    ```bash
+   dotnet run
 4. Look at the terminal output for the exact listening port (usually http://localhost:5094).
 5. Open your web browser and navigate to the Swagger UI: http://localhost:5094/swagger
 
