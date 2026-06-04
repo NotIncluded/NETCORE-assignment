@@ -78,7 +78,6 @@ app.MapControllers();
 // --- 5. TEMPORARY TEST TOKEN ENDPOINT ---
 app.MapGet("/api/test-token", () =>
 {
-    // UPDATE THIS LINE to match your 32+ character key
     var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("ThisIsMySuperSecretKeyForTaskManagementAPI123!"));
     
     var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);

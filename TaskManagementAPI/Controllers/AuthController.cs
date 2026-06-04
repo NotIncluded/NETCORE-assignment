@@ -18,7 +18,6 @@ public class AuthController : ControllerBase
             new Claim(ClaimTypes.Name, "admin")
         };
 
-        // FIXED: Updated to the 32+ character key so HS256 doesn't crash
         var key = new SymmetricSecurityKey(
             Encoding.UTF8.GetBytes("ThisIsMySuperSecretKeyForTaskManagementAPI123!")
         );

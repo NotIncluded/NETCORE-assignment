@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore; // Added this to support async DB methods!
+using Microsoft.EntityFrameworkCore;
 using TaskManagementAPI.Data;
 using TaskManagementAPI.Models;
 
@@ -28,7 +28,6 @@ public class TasksController : ControllerBase
     [HttpGet("{id}")]
     public async Task<IActionResult> Get(int id)
     {
-        // FindAsync() replaces Find()
         var task = await _context.Tasks.FindAsync(id);
 
         if (task == null)
