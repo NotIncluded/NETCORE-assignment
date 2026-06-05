@@ -75,7 +75,6 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-// --- 5. TEMPORARY TEST TOKEN ENDPOINT ---
 app.MapGet("/api/test-token", () =>
 {
     var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("ThisIsMySuperSecretKeyForTaskManagementAPI123!"));

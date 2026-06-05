@@ -21,7 +21,6 @@ public class TasksController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
-        // ToListAsync() executes the query asynchronously
         return Ok(await _context.Tasks.ToListAsync());
     }
 
