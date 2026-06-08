@@ -4,6 +4,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
 using TaskManagementAPI.Data;
+using TaskManagementAPI.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -42,6 +43,8 @@ builder.Services.AddSwaggerGen(c =>
 // --- 2. DATABASE CONFIGURATION ---
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlite("Data Source=TaskDb.db"));
+
+builder.Services.AddScoped<ITaskRepository, TaskRepository>();
 
 // --- 3. AUTHENTICATION CONFIGURATION ---
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

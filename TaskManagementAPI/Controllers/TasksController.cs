@@ -1,8 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using TaskManagementAPI.Data;
 using TaskManagementAPI.Models;
+using TaskManagementAPI.Repositories;
 
 namespace TaskManagementAPI.Controllers;
 
@@ -11,23 +10,25 @@ namespace TaskManagementAPI.Controllers;
 [Authorize]
 public class TasksController : ControllerBase
 {
-    private readonly AppDbContext _context;
+    private readonly ITaskRepository _repository;
 
-    public TasksController(AppDbContext context)
+    // Inversion of Control: The controller only knows about the interface
+    public TasksController(ITaskRepository repository)
     {
-        _context = context;
+        _repository = repository;
     }
 
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
-        return Ok(await _context.Tasks.ToListAsync());
+        var tasks = await _repository.GetAllAsync();
+        return Ok(tasks);
     }
 
     [HttpGet("{id}")]
     public async Task<IActionResult> Get(int id)
     {
-        var task = await _context.Tasks.FindAsync(id);
+        var task = await _repository.GetByIdAsync(id);
 
         if (task == null)
             return NotFound();
@@ -38,17 +39,14 @@ public class TasksController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Create(TaskItem task)
     {
-        _context.Tasks.Add(task);
-        // SaveChangesAsync() frees up the thread while writing to SQLite
-        await _context.SaveChangesAsync(); 
-
+        await _repository.AddAsync(task);
         return Ok(task);
     }
 
     [HttpPut("{id}")]
     public async Task<IActionResult> Update(int id, TaskItem updatedTask)
     {
-        var task = await _context.Tasks.FindAsync(id);
+        var task = await _repository.GetByIdAsync(id);
 
         if (task == null)
             return NotFound();
@@ -56,7 +54,7 @@ public class TasksController : ControllerBase
         task.Title = updatedTask.Title;
         task.IsCompleted = updatedTask.IsCompleted;
 
-        await _context.SaveChangesAsync();
+        await _repository.UpdateAsync(task);
 
         return Ok(task);
     }
@@ -64,13 +62,12 @@ public class TasksController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(int id)
     {
-        var task = await _context.Tasks.FindAsync(id);
+        var task = await _repository.GetByIdAsync(id);
 
         if (task == null)
             return NotFound();
 
-        _context.Tasks.Remove(task);
-        await _context.SaveChangesAsync();
+        await _repository.DeleteAsync(task);
 
         return NoContent();
     }
