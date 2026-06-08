@@ -45,6 +45,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlite("Data Source=TaskDb.db"));
 
 builder.Services.AddScoped<ITaskRepository, TaskRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 // --- 3. AUTHENTICATION CONFIGURATION ---
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
